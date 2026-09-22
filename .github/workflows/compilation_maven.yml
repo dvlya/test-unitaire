@@ -1,0 +1,28 @@
+#Nom du projet, peut être n'importe quoi, mais qui décrit bien ce que fait le workflow
+name: Compilation du projet Maven
+
+#S'exécute seulement quand on pousse du code sur la branche main
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+#Ma définition de job qui va s'éxécuter sur la machine virtuelle ubuntu-latest, et qui va exécuter les étapes suivantes
+jobs:
+    compilation:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout repository
+            uses: actions/checkout@v5
+          - name: Set up JDK 25
+            uses: actions/setup-java@v5
+            with:
+              distribution: 'temurin'
+              java-version: '25'
+          - name : Fournir access au runner
+            run: chmod +x mvnw
+          - name: Compilation du projet Maven
+            run: ./mvnw compile
+          
+  
